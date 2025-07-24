@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMOS論理回路シミュレーション：2NOR回路</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>CMOS論理回路シミュレーション：2NOR回路</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+
+            <section>
+                <h2>2NOR 回路の作成</h2>
+                <h3>回路図作成の参考</h3>
+                <p>2NOR 回路もテキストに基づいて作成できますが、講義3の14ページを参考にすると理解が深まります。2NOR 回路の設計に際しては、前の回路と同様に PMOSとNMOS の組み合わせで構成されます。</p>
+                <img src="images/2nor_circuit.png" alt="2NOR Circuit" style="max-width: 100%; height: auto;">
+                
+            </section>
+
+            <section>
+                <h2>トランジスタの設定</h2>
+                <p>2NOR 回路に使用するトランジスタの設定は以下の通りです。</p>
+                <ul>
+                    <li>Model Name: P_50n (PMOS), N_50n (NMOS)</li>
+                    <li>Length: 50nm (PMOS、NMOS 共通)</li>
+                    <li>Width: 500nm (PMOS、NMOS 共通)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>回路の保存</h2>
+                <p>2NOR 回路も、回路図が完成した時点で必ず「ドキュメント > LTspice 実習フォルダ」に「2NOR」という名前で保存してください。</p>
+            </section>
+
+            <section>
+                <h2>シミュレーションの実行</h2>
+                <p>A入力を0Vから 1V にスイープし、B入力を固定して、2NOR の動作を確認します。シミュレーション結果では、AとBのどちらかが 0V の場合に出力が1になることが確認できます。両方が 1V の場合、出力は0V になります。</p>
+                <img src="images/2nor_truth_table.png" alt="2NOR Truth Table" style="max-width: 100%; height: auto;">
+                <p>•V3（B入力）を1V固定し、V1（A入力）を0～1Vまでスイープした結果</p>
+                <p>シミュレーション結果として、真理値表の赤枠で囲んだ通り、Aが0のとき0、Aが1のとき0となっていることが確認できます。</p>
+                <img src="images/2nor_result_v3_1v.png" alt="2NOR Result V3 1V" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>パルス入力による考察</h2>
+                <p>余談ですが、V1 と V3 にパルス入力を入れることで、一度に多くの結果を確認することができます。パルス入力は後ほど詳しく説明しますが、シミュレーション結果を考察する際の一つの方法として覚えておくと良いでしょう。</p>
+                <p>下のグラフでは、一番上の波形が出力を示し、赤が V1(A 入力)、緑が V3(B入力)です。</p>
+                <img src="images/2nor_pulse_input_waveform.png" alt="2NOR Pulse Input Waveform" style="max-width: 100%; height: auto;">
+                
+            </section>
+
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

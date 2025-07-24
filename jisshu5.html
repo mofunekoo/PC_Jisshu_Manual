@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実習5：RSA暗号処理回路の実装</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>実習5：RSA暗号処理回路の実装</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="index.html" class="back-link">← 目次に戻る</a>
+
+            <section>
+                <h2>実習5 RSA 暗号処理回路の実装</h2>
+                <p>ここでは、講義7で説明した暗号理論を実際に体験するプログラムを作成します。プログラムの大部分は三浦先生が作成しており、私たちが記述するのは Multiplication_9bit のみです。まず、簡単にプログラムの構成を説明します。</p>
+                <p>8ビット(1文字)と16ビット(2文字)の暗号化を行いますが、その方法には単純実装とバイナリ法の2種類があります。</p>
+            </section>
+
+            <section>
+                <h2>単純実装</h2>
+                <p>講義7で説明したように、手計算で余りを求める方法です。式は、(M^E mod N) → Cとなります。</p>
+                <p>例えば、平文 M=3、E=3、N=2 の場合、暗号文がどうなるかを考えましょう。</p>
+                <ul>
+                    <li>まず、3を3乗します:3×3×3=27。</li>
+                    <li>次に、27÷2=13 余り1。この場合、暗号文は1になります。</li>
+                </ul>
+                <h3>べき乗を求める方法</h3>
+                <p>まず、べき乗演算モジュールで平文 M を E-1 回掛けます。</p>
+                <ul>
+                    <li>平文 M=3、E=3 の場合、3の3乗は次のようになります:
+                        <ul>
+                            <li>1回目:3×3=9</li>
+                            <li>2回目:9×3=27</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>これくらいなら良いのですが、Eの値が大きくなると計算に時間がかかります。8ビットの場合は影響が少ないですが、16 ビットの単純実装では計算に時間がかかるため、
+                プログラムを実行してもセグメントに結果がすぐ表示されません。そのため、毎年プログラムが失敗したと思う方が多いですが、
+                処理に時間がかかっているだけなので焦らず待つようにしてください。</p>
+
+                <h3>剰余を求める方法</h3>
+                <p>剰余は剰余乗算モジュールで計算します。</p>
+                <ul>
+                    <li>1回目の掛け算:3×3=9</li>
+                    <li>2回目の掛け算:9×3=27</li>
+                </ul>
+                <p>掛け算が終了したら、割り算ではなく引き算で余りを求めます。引き算を続け、2より小さくなるまで繰り返します。</p>
+                <ul>
+                    <li>27-2-2527 - 2 = 2527-2=25</li>
+                    <li>25-2-2325 - 2 = 2325-2-23</li>
+                    <li>3-2-13-2 = 13-2=1</li>
+                </ul>
+                <p>このようにして、余りが1と分かります。ここで商(13)は必要なく、余りの1さえわかれば良いです。</p>
+            </section>
+
+            <section>
+                <h2>バイナリ法</h2>
+                <p>バイナリ法では(M^E mod N→C)の計算を高速化します。</p>
+                <p>例えば、平文 M=3、E=3、N=2 の場合、E=3 を2進数に変換すると 101 になります。これを使って計算の高速化を行います。</p>
+                <h3>バイナリ法の手順</h3>
+                <h4>1. べき乗の指数を2進数に変換</h4>
+                <ul>
+                    <li>計算するべき乗の指数(E)を2進数に変換します。例えば、E=3 なら、2進数にすると 101 になります。</li>
+                </ul>
+                <h4>2. 各ビットの値に応じた計算</h4>
+                <ul>
+                    <li>この2進数の各ビットに基づいて、べき乗を計算します。</li>
+                </ul>
+                <h4>3. 掛け算の結果に剰余を求める</h4>
+                <ul>
+                    <li>割り算は使わずに、引き算を繰り返して剰余を求めます。</li>
+                </ul>
+                <h3>基本的なべき乗計算</h3>
+                <p>ビットが「0」の場合と「1」の場合で計算が変わります。</p>
+                <ul>
+                    <li><strong>ビットが「0」の場合:</strong><br>Y=(Y×Y)mod N<br>つまり、前の結果を自分自身と掛け算してから、剰余を求めます。</li>
+                    <li><strong>ビットが「1」の場合:</strong><br>Y=(Y×Y)mod N の後に、さらに<br>Y=(Y×b)mod N<br>を計算します。</li>
+                </ul>
+                <h3>例</h3>
+                <p>次に、3の5乗(3^5)をバイナリ法で計算します。</p>
+                <ul>
+                    <li>E=5 は 2進数で 101 になります。</li>
+                    <li>初期値として Y=1 から計算を始めます。</li>
+                    <li>1. ビットが「1」なので、<br>Y=1×3=3</li>
+                    <li>2. 次のビットが「0」なので、<br>Y=3×3=9</li>
+                    <li>3. 最後のビットが「1」なので、<br>Y=9×9=81<br>Y=81×3=243</li>
+                </ul>
+                <p>結果として、3^5=243 となります。</p>
+                <h3>高速化のポイント</h3>
+                <p>バイナリ法では、すべてのビットを使って一気に計算します。単純なべき乗計算のように指数分だけ順番に掛け算するのではなく、掛け算の回数を減らして計算できるため、
+                大きな数のべき乗計算が効率良く行えるのです。</p>
+                <p>指数が大きくなればなるほど、この高速化の効果が顕著に現れます。</p>
+                <p>例えば、3の100乗を普通の方法で計算すると、99回の掛け算が必要ですが、バイナリ法だと掛け算の回数は9回になります。</p>
+                <p>単純実装とバイナリ法については、知識として理解しておく程度で十分です。特に、単純実装は時間がかかることを覚えておいてください。</p>
+            </section>
+
+            <section>
+                <h2>実習プログラムの確認</h2>
+                <p>実習で最も簡単な 8bit RSA 暗号化のプログラムを確認していきます。</p>
+                <ul>
+                    <li><strong>RSA_Encryption_Simpleのファイルを開きます。</strong>
+                </ul>
+                <img src="images/rsa_file_location.png" alt="RSA File Location" style="max-width: 100%; height: auto;">
+                <p>TOP モジュールは RSA_Encryption_Simple_8bitです。</p>
+                <img src="images/rsa_project_navigator.png" alt="RSA Project Navigator" style="max-width: 100%; height: auto;">
+                <p>図の+部分をクリックします</p>
+                <img src="images/rsa_module_details.png" alt="RSA Module Details" style="max-width: 100%; height: auto;">
+                <p>実習で使用するのは図のMultiplication_9bitです。このファイルをクリックすると右のようにプログラムがでます。<br>
+                この always から end までの部分を編集して完成させます。</p>
+                <img src="images/modular_exponentiation_module.png" alt="Modular Exponentiation Module" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>実習の進め方</h2>
+                <p>実習では、剰余乗算モジュールの動作記述を行います。まずは基本的な考え方を説明します。</p>
+                <img src="images/rsa_hinto.png" alt="RSA Hinto" style="max-width: 50%; height: auto;">
+                <ul>
+                    <li><strong>S0 (初期化):</strong> リセットボタンが押されたとき、すべてのレジスタ信号を0にします。対象の信号は以下です:
+                        <ul>
+                            <li>isMult(掛け算をするかどうかの信号、0で計算、1で終了)</li>
+                            <li>endflag(剰余算終了の信号、1で計算終了)</li>
+                            <li>out(出力される余り)</li>
+                            <li>mult_tmp(掛け算の結果が入る場所)</li>
+                        </ul>
+                    </li>
+                    <li><strong>S1 (乗算):</strong> リセットされていない場合、掛け算を実行します。掛け算されるのは、べき乗演算モジュールで計算されたaとbの値で、結果は mult_tmp に入ります。</li>
+                    <li><strong>S2 (剰余算):</strong> 掛け算の結果から余りを求めます。割り算ではなく、引き算で余りを計算します。</li>
+                    <li><strong>S3 (出力):</strong> 剰余が求められたら、計算を終了し、その結果を出力します。</li>
+                </ul>
+                <p>8bitプログラムと16bitプログラムのヒントと解答はこちら</p>
+            </section>
+
+            <section>
+                <h2>8bit RSA の暗号化と復号の動作</h2>
+                <h3>暗号化の流れ:</h3>
+                <p>メッセージをスライドスイッチで入力すると、LCD に暗号文が表示されます。</p>
+                <p>例:「ヤ」という文字を入力すると、それが暗号化され、(D4)16のような暗号文が表示されます。</p>
+                <img src="images/8bit_rsa_encryption.png" alt="8bit RSA Encryption" style="max-width: 100%; height: auto;">
+                <h3>復号の流れ:</h3>
+                <p>スライドスイッチで暗号文を入力し、LCD に元のメッセージが表示されます。</p>
+                <p>例:暗号文(119)16 を入力すると、「ヤ」という元のメッセージが復号されて表示されます。</p>
+                <img src="images/8bit_rsa_decryption.png" alt="8bit RSA Decryption" style="max-width: 100%; height: auto;">
+                <p>この手順で、1文字(8bit)のメッセージを暗号化・復号することができます。</p>
+            </section>
+
+            <section>
+                <h2>6. 16bit RSA の暗号化と復号の動作</h2>
+                <p>16bit RSAでは、2文字のメッセージを暗号化・復号することが可能です。</p>
+                <h3>暗号化の流れ:</h3>
+                <p>2文字のメッセージをスライドスイッチで入力し、暗号化を実行します。</p>
+                <p>例:「ヤマ」を入力すると、(D4CF)16のような暗号文が表示されます。</p>
+                <img src="images/16bit_rsa_encryption.png" alt="16bit RSA Encryption" style="max-width: 100%; height: auto;">
+                <h3>復号の流れ:</h3>
+                <p>暗号文を入力すると、元の2文字のメッセージが LCD に表示されます。</p>
+                <p>例:暗号文(0F968)16を入力すると、「ヤマ」という元のメッセージが復号されて表示されます。</p>
+                <img src="images/16bit_rsa_decryption.png" alt="16bit RSA Decryption" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>テキストの16進数から2進数への変換</h2>
+                <p>テキストの「ヤ」は LCD 文字テーブルに基づき、16進数では「D4」となります。しかし、ボードに入力するのは2進数ですので、16進数を2進数に変換する必要があります。16進数を2進数に変換する方法としては、各桁の16進数を4ビットの2進数に分解し、それを結合するのが最も簡単でわかりやすいです。16進数の1桁は、ちょうど4ビットの2進数で表せるため、各桁を対応する2進数に変換します。</p>
+                <h3>手順</h3>
+                <h4>1. 16進数の「D4」をそれぞれ分解します。</h4>
+                <ul>
+                    <li>D(16進数)→10進数「13」</li>
+                    <li>4(16進数)→10進数「4」</li>
+                </ul>
+                <h4>2. 各桁を4ビットの2進数に変換します。</h4>
+                <ul>
+                    <li>D (13) の2進数 → 1101</li>
+                    <li>4(4) の2進数→0100</li>
+                </ul>
+                <h4>3. 結合して2進数を完成させます。</h4>
+                <ul>
+                    <li>「D4」 → 「1101 0100」</li>
+                </ul>
+                <p>16進数「D4」を2進数に変換すると「11010100」となります。</p>
+
+                <h3>参考: 16進数から2進数への対応表</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>16進数</th>
+                            <th>2進数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0</td><td>0000</td></tr>
+                        <tr><td>1</td><td>0001</td></tr>
+                        <tr><td>2</td><td>0010</td></tr>
+                        <tr><td>3</td><td>0011</td></tr>
+                        <tr><td>4</td><td>0100</td></tr>
+                        <tr><td>5</td><td>0101</td></tr>
+                        <tr><td>6</td><td>0110</td></tr>
+                        <tr><td>7</td><td>0111</td></tr>
+                        <tr><td>8</td><td>1000</td></tr>
+                        <tr><td>9</td><td>1001</td></tr>
+                        <tr><td>A</td><td>1010</td></tr>
+                        <tr><td>B</td><td>1011</td></tr>
+                        <tr><td>C</td><td>1100</td></tr>
+                        <tr><td>D</td><td>1101</td></tr>
+                        <tr><td>E</td><td>1110</td></tr>
+                        <tr><td>F</td><td>1111</td></tr>
+                    </tbody>
+                </table>
+                <p>この方法を使うと、簡単に16進数を2進数に変換できます。</p>
+
+                <h3>LCD 文字テーブルのカタカナ部分</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>文字</th>
+                            <th>16進数</th>
+                            <th>2進数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ア</td><td>B1</td><td>10110001</td></tr>
+                        <tr><td>イ</td><td>B2</td><td>10110010</td></tr>
+                        <tr><td>ウ</td><td>B3</td><td>10110011</td></tr>
+                        <tr><td>エ</td><td>B4</td><td>10110100</td></tr>
+                        <tr><td>オ</td><td>B5</td><td>10110101</td></tr>
+                        <tr><td>カ</td><td>B6</td><td>10110110</td></tr>
+                        <tr><td>キ</td><td>B7</td><td>10110111</td></tr>
+                        <tr><td>ク</td><td>B8</td><td>10111000</td></tr>
+                        <tr><td>ケ</td><td>B9</td><td>10111001</td></tr>
+                        <tr><td>コ</td><td>BA</td><td>10111010</td></tr>
+                        <tr><td>サ</td><td>BB</td><td>10111011</td></tr>
+                        <tr><td>シ</td><td>BC</td><td>10111100</td></tr>
+                        <tr><td>ス</td><td>BD</td><td>10111101</td></tr>
+                        <tr><td>セ</td><td>BE</td><td>10111110</td></tr>
+                        <tr><td>ソ</td><td>BF</td><td>10111111</td></tr>
+                        <tr><td>タ</td><td>C0</td><td>11000000</td></tr>
+                        <tr><td>チ</td><td>C1</td><td>11000001</td></tr>
+                        <tr><td>ツ</td><td>C2</td><td>11000010</td></tr>
+                        <tr><td>テ</td><td>C3</td><td>11000011</td></tr>
+                        <tr><td>ト</td><td>C4</td><td>11000100</td></tr>
+                        <tr><td>ナ</td><td>C5</td><td>11000101</td></tr>
+                        <tr><td>ニ</td><td>C6</td><td>11000110</td></tr>
+                        <tr><td>ヌ</td><td>C7</td><td>11000111</td></tr>
+                        <tr><td>ネ</td><td>C8</td><td>11001000</td></tr>
+                        <tr><td>ノ</td><td>C9</td><td>11001001</td></tr>
+                        <tr><td>ハ</td><td>CA</td><td>11001010</td></tr>
+                        <tr><td>ヒ</td><td>CB</td><td>11001011</td></tr>
+                        <tr><td>フ</td><td>CC</td><td>11001100</td></tr>
+                        <tr><td>ヘ</td><td>CD</td><td>11001101</td></tr>
+                        <tr><td>ホ</td><td>CE</td><td>11001110</td></tr>
+                        <tr><td>マ</td><td>CF</td><td>11001111</td></tr>
+                        <tr><td>ミ</td><td>D0</td><td>11010000</td></tr>
+                        <tr><td>ム</td><td>D1</td><td>11010001</td></tr>
+                        <tr><td>メ</td><td>D2</td><td>11010010</td></tr>
+                        <tr><td>モ</td><td>D3</td><td>11010011</td></tr>
+                        <tr><td>ヤ</td><td>D4</td><td>11010100</td></tr>
+                        <tr><td>ユ</td><td>D5</td><td>11010101</td></tr>
+                        <tr><td>ヨ</td><td>D6</td><td>11010110</td></tr>
+                        <tr><td>ラ</td><td>D7</td><td>11010111</td></tr>
+                        <tr><td>リ</td><td>D8</td><td>11011000</td></tr>
+                        <tr><td>ル</td><td>D9</td><td>11011001</td></tr>
+                        <tr><td>レ</td><td>DA</td><td>11011010</td></tr>
+                        <tr><td>ロ</td><td>DB</td><td>11011011</td></tr>
+                        <tr><td>ワ</td><td>DC</td><td>11011100</td></tr>
+                        <tr><td>ン</td><td>DD</td><td>11011101</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <a href="index.html" class="back-link">← 目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

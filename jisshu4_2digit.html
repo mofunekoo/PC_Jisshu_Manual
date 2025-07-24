@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verilogプログラミング練習（2桁に拡張）</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Verilogプログラミング練習（2桁に拡張）</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu4.html" class="back-link">← 実習4の目次に戻る</a>
+
+            <section>
+                <h2>実習4: 2進数を10進数に表示するプログラム (2桁)</h2>
+                <h3>例題回路の動作理解</h3>
+                <p>seg7_decimal_1digit の状態遷移図</p>
+                <img src="images/seg7_decimal_1digit_state_diagram.png" alt="seg7_decimal_1digit State Diagram" style="max-width: 100%; height: auto;">
+                <ul>
+                    <li><strong>S0: 初期化状態</strong><br>十進数出力の値を0 (4'd0)に初期化します。<br>2進数入力をレジスタに格納する処理が行われます。</li>
+                    <li><strong>S1: 十進数出力</strong><br>レジスタに格納された2進数入力を、7セグメントディスプレイに十進数として出力する状態です。</li>
+                </ul>
+                <p>この遷移図では、クロック信号(clk)とリセット信号(rstn)が使用され、リセットが行われると状態が初期化されるという基本動作が示されています。</p>
+            </section>
+
+            <section>
+                <h2>Verilog プログラミング練習</h2>
+                <p>次に、十進数の表示を2桁に拡張する方法を説明します。</p>
+                <ol>
+                    <li><strong>bin2dec_1digit をフォルダごとコピー</strong><br>現在の1桁表示用の bin2dec_1digit をコピーし、2桁に拡張する準備を行います。</li>
+                    <li><strong>bin2dec_2digits と命名</strong><br>新しいプロジェクトを bin2dec_2digits として命名します。</li>
+                    <li><strong>bin2dec_2digits/bin2dec.qpf をダブルクリック</strong><br>新しいプロジェクトファイルを開きます。</li>
+                    <li><strong>Project Navigator 内の bin2dec をダブルクリック</strong><br>Verilog-HDL 記述を拡張するために、プロジェクト内の bin2dec モジュールを編集します。</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>ステップごとの説明:</h2>
+                <img src="images/de2_115_board.png" alt="DE2-115 Board" style="max-width: 50%; height: auto;">
+                <h3>1. 最初の準備:</h3>
+                <ul>
+                    <li>スイッチで「100011」という2進数を入力すると、この値は「tmp_reg」という変数に格納されます。この段階ではまだ、ディスプレイには何も表示されていません。</li>
+                </ul>
+                <h3>2. リセットボタンを押すと:</h3>
+                <ul>
+                    <li>リセットボタン(KEY0)が押されると、tmp_regには「35」という数字が設定されます。同時に、10の位と1の位を表示するための変数である digit1 と digit0 は、初期値として「0」が設定されます。</li>
+                </ul>
+                <h3>3. 10以上の数値かどうかを確認:</h3>
+                <ul>
+                    <li>tmp_reg の値が 10 以上であるかを確認します。もし 10 以上であれば、その値から 10 を引き、その結果を再び tmp_reg に代入します。さらに、この操作を行うたびに、digit1 に 1 を加算します。</li>
+                </ul>
+                <p>具体例として、「35」から10 を引くと「25」になります。このとき、digit1 には「1」が設定されます。次に、「25」から 10 を引いて「15」にし、digit1 にさらに 1 を加えて「2」にします。同様に、「15」から 10 を引いて「5」にし、digit1 にもう1を加えて「3」にします。</p>
+                <h3>4. 1の位の設定:</h3>
+                <ul>
+                    <li>最終的に、tmp_reg に残った値(この例では「5」)を digit0 に設定します。これにより、7セグメントディスプレイの1の位に「5」が表示され、10の位には「3」が表示されることになります。</li>
+                </ul>
+                <h3>5. 表示される結果:</h3>
+                <ul>
+                    <li>上記のステップを通して、入力された「100011」という2進数は、10進数の「35」としてディスプレイに表示されます。</li>
+                </ul>
+                <p>上記を図にしたものは<a href="pdfs/seg7_demimal_2digit_DFD.pdf" target="_blank">こちら</a>。</p>
+                <p>それでもわからない場合は、<a href="pdfs/seg7_demimal_2digit_program.pdf" target="_blank">こちら</a><span style="color: red; font-weight: bold;">（注意：クリックすると解答が開きます）</span>。</p>
+            </section>
+
+            <a href="jisshu4.html" class="back-link">← 実習4の目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

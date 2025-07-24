@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMOS論理回路シミュレーション：インバーター回路のSymbol</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>CMOS論理回路シミュレーション：インバーター回路のSymbol</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+
+            <section>
+                <h2>インバータ回路のシンボル作成</h2>
+                <h3>1. 回路図の準備</h3>
+                <p>まず、実習1で作成したインバータ回路を利用します。「INV.asc」を開き、シンボル化の準備を行います。以下の手順に従って進めてください。</p>
+
+                <h4>INV.asc を開く</h4>
+                <p>実習1で保存した「INV.asc」を開きます。このインバータ回路を階層化して再利用するために、シンボルを作成します。</p>
+
+                <h4>電源やグランドの消去</h4>
+                <p>シンボル化する際には、回路に含まれる電源やグランドは削除する必要があります。具体的には、作成した回路から電源(VDD)やグランド(GND)のシンボルを消去します。
+                削除する理由は、上位の回路で電源やグランドを接続するため、シンボル内に電源やグランドを含めないようにするためです。</p>
+                <img src="images/delete_power_gnd.png" alt="Delete Power and GND" style="max-width: 100%; height: auto;">
+                <p>Delete キーもしくは <img src="images/scissors_icon.png" alt="Scissors Icon" style="vertical-align: middle;"> を押して、消したい電源や配線をクリックします。削除後、回路図は図のように電源と不要な配線が消去された状態になります。</p>
+            </section>
+
+            <section>
+                <h2>入出力ピンの設定</h2>
+                <p>ツールバーから PIN 配置ツール <img src="images/pin_tool_icon.png" alt="PIN Tool Icon" style="vertical-align: middle;"> を選択</p>
+                <img src="images/pin_settings.png" alt="PIN Settings" style="max-width: 100%; height: auto;">
+                <p>「I」「O」「VSS」「VDD」とそれぞれ記入します</p>
+                <ul>
+                    <li>「I」のときは「input」</li>
+                    <li>「O」のときは「output」</li>
+                    <li>「VSS」「VDD」の場合は「Bi-Direct」(bidirectional;双方向)</li>
+                </ul>
+                <p>PIN の配置が終了すると、回路図は下図のような状態になります。</p>
+                <img src="images/inverter_symbol_pins.png" alt="Inverter Symbol Pins" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>回路の保存</h2>
+                <p>シンボル化する前に、作成した回路図を保存します。回路図は「INV_sch」という名前で保存してください。テキストには「INV_sch.asc」と書かれていますが、「asc」は入力する必要はありません。</p>
+                <p>ここで正しく保存しないと、この後のシンボルが中身のないものになってしまいます。毎年この部分で間違いが多いため、特に注意してください。保存時には、必ず設定内容や回路図の状態を確認し、正しく保存できているか確認しましょう。</p>
+            </section>
+
+            <section>
+                <h2>2. シンボルの作成</h2>
+                <h3>シンボル作成の手順</h3>
+                <p>メニューバーの Hierarchy > Open this sheet's symbol を選択します。</p>
+                <img src="images/open_sheet_symbol.png" alt="Open Sheet Symbol" style="max-width: 100%; height: auto;">
+                <p>すると、次のメッセージが表示されます。</p>
+                <img src="images/open_sheet.png" alt="Open Sheet" style="max-width: 100%; height: auto;">
+                <p>「Couldn't find this sheet's symbol. Shall I try to automatically generate one?」（このシートのシンボルが見つかりませんでした。自動的に作成しますか?）</p>
+                <p>このメッセージが表示されたら、「はい」を選択します。</p>
+
+                <h3>PIN 配置の調整</h3>
+                <p>シンボルが生成されたら、ツールバーの PIN 移動ツール <img src="images/pin_move_tool_icon.png" alt="PIN Move Tool Icon" style="vertical-align: middle;"> を使用して、PIN を使いやすい位置に調整します。調整後、必ず「INV_sch」として保存します。ここでの保存が不十分だと、正しいシンボルが作成されないため注意してください。</p>
+                <img src="images/adjusted_inverter_symbol.png" alt="Adjusted Inverter Symbol" style="max-width: 100%; height: auto;">
+            </section>
+
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

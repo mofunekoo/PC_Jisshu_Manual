@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実習1：N_1u 詳細</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>実習1：N_1u 詳細</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu1.html" class="back-link">← 実習1の目次に戻る</a>
+
+            <section>
+                <h2>1. LTspice の使用方法</h2>
+                <h3>1.1 LTspice の起動</h3>
+                <p>デスクトップにある LTspice のアイコン <img src="images/ltspice_icon.png" alt="LTspice Icon" style="vertical-align: middle;"> をダブルクリックしてソフトを起動してください。これにより、回路図作成用のウィンドウが表示されます。</p>
+
+                <h3>1.2 回路ファイルのオープン</h3>
+                <p>ツールバーの <img src="images/open_icon.png" alt="Open Icon" style="vertical-align: middle;"> をクリックするか、キーボードショートカット Ctrl + N を使用して回路ファイルをオープンします。これにより、新しい回路図の作成が開始されます。ウィンドウが灰色の空白画面になり、回路図作成の準備が整います。</p>
+                <img src="images/ltspice_window.png" alt="LTspice Window" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>2. 回路の作成</h2>
+                <h3>2.1 トランジスタのシンボル配置</h3>
+                <h4>2.1.1 NMOSトランジスタの配置</h4>
+                <p>ツールバーの「Select Component Symbol」ボタンをクリックし、コンポーネントリストから「nmos4」(NMOSトランジスタ)を選択します。選択後、回路図上でクリックして NMOS を配置します。</p>
+                <img src="images/select_component.png" alt="Select Component" style="max-width: 100%; height: auto;">
+
+                <h4>2.1.2 パラメータ設定</h4>
+                <p>NMOSトランジスタのシンボル上にカーソルを置き、右クリックしてパラメータ設定ウィンドウを表示します。以下のパラメータを入力します。</p>
+                <img src="images/nmos_parameters.png" alt="NMOS Parameters" style="max-width: 100%; height: auto;">
+                <dl>
+                    <dt>Model Name:</dt>
+                    <dd>使用するモデルの名前を指定します。今回は「N_1u」と設定します。モデルは MOSFET の電気的特性を決定するものであり、シミュレーション結果に影響を与えます。</dd>
+                    <dt>Length (L):</dt>
+                    <dd>トランジスタのチャネル長を指定します。単位は「µm (マイクロメートル)」で、ここでは 1u に設定します。</dd>
+                    <dt>Width (W):</dt>
+                    <dd>トランジスタのチャネル幅を指定します。単位は「µm」で、ここでは 10u に設定します。チャネル幅を大きくすることで、同じゲート電圧下で流れる電流が増加します。</dd>
+                    <dt>Drain Area (AD):</dt>
+                    <dd>ドレイン端の面積を指定するオプションです。通常は空白で問題ありませんが、詳細な寄生パラメータを考慮したい場合に設定します。</dd>
+                    <dt>Source Area (AS):</dt>
+                    <dd>ソース端の面積を指定するオプションです。こちらも通常は空白で構いません。</dd>
+                    <dt>Drain Perimeter (PD):</dt>
+                    <dd>ドレイン端の周囲長を指定します。空白で問題ありませんが、詳細な解析で必要となることがあります。</dd>
+                    <dt>Source Perimeter (PS):</dt>
+                    <dd>ソース端の周囲長を指定します。通常は空白で問題ありません。</dd>
+                    <dt>No. Parallel Devices (M):</dt>
+                    <dd>同じ MOSFET を並列に配置する数を指定します。ここでは1台しか使用しないため、空白のままで問題ありません。</dd>
+                </dl>
+                <p>これらの設定が完了したら、「OK」を押して設定を反映させます。</p>
+
+                
+            </section>
+
+            <section>
+                <h2>3. DC 解析の準備</h2>
+                <h3>3.1 グランドの配置</h3>
+                <p>ツールバーのグランドアイコン <img src="images/gnd_icon.png" alt="GND Icon" style="vertical-align: middle;"> をクリックして回路図にグランドを配置します。ショートカットキーはGです。</p>
+
+                <h3>3.2 電源の配置</h3>
+                <p>電圧源を追加するには、ツールバーの「Select Component Symbol」アイコン <img src="images/component_icon.png" alt="Component Icon" style="vertical-align: middle;"> をクリックするか、ショートカットキー F2 を使用してコンポーネントリストから選びます。選択した電圧源を回路に配置します。</p>
+                <p>配置した電源のシンボルを右クリックすると、以下のようなパラメータ設定ウィンドウが表示されます。</p>
+                <img src="images/voltage_source.png" alt="Voltage Source" style="max-width: 100%; height: auto;">
+                <dl>
+                    <dt>DC value (V):</dt>
+                    <dd>電源として供給する直流電圧の値を入力します。V1: 0V, V2: 0V</dd>
+                    <dt>Series Resistance (Ω):</dt>
+                    <dd>電源に直列に接続される内部抵抗を設定するオプションです。通常は空白のままで問題ありませんが、内部抵抗を持たせる必要がある場合に使用します。</dd>
+                    <dt>OKボタン:</dt>
+                    <dd>設定を確定して回路に反映させます。</dd>
+                    <dt>Cancel ボタン:</dt>
+                    <dd>変更を破棄してウィンドウを閉じます。</dd>
+                    <dt>Advanced ボタン:</dt>
+                    <dd>AC 解析やパルス信号など、詳細な電源設定を行うためのオプションです。通常のDC解析では使用しません。</dd>
+                </dl>
+
+                <h3>3.3 配線</h3>
+                <h4>3.3.1 配線の接続</h4>
+                <p>配線はツールバーの「Wire」アイコン <img src="images/wire_icon.png" alt="Wire Icon" style="vertical-align: middle;"> をクリックして行います。ショートカットキー F3 を使用しても配線を開始できます。回路内の各部品を正しく接続し、特に電源とグランドの接続が正しいか確認してください。</p>
+                <img src="images/nmos_circuit.png" alt="NMOS Circuit" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>4. シミュレーション設定</h2>
+                <h4>4.1 シミュレーションコマンドの編集</h4>
+                <p>メニューバーから Simulate > Edit Simulation Cmd を選択します。この操作は、ショートカットキー Ctrl + E でも実行できます。次に表示される「Edit Simulation Command」ウィンドウで、シミュレーションのパラメータを設定します。</p>
+
+                <h4>4.2 DC Sweep の設定</h4>
+                <img src="images/dc_sweep_settings.png" alt="DC Sweep Settings" style="max-width: 100%; height: auto;">
+                <dl>
+                    <dt>1st Source (V2)の設定:</dt>
+                    <dd>最初に、VDSの電圧をスイープするために、1st Sourceを設定します。以下の値を入力します。
+                        <ul>
+                            <li>Start value: 0</li>
+                            <li>Stop value: 5</li>
+                            <li>Increment: 0.05</li>
+                        </ul>
+                        <p>この設定では、VDSの電圧を 0V から 5V まで、0.05V 間隔でスイープします。これにより、VDSがシミュレーション中に連続的に変化し、トランジスタの動作特性を解析することができます。</p>
+                    </dd>
+                    <dt>2nd Source (V1)の設定:</dt>
+                    <dd>次に、VGSの電圧をスイープするために、2nd Source を設定します。値は以下の通りです。
+                        <ul>
+                            <li>Start value: 0</li>
+                            <li>Stop value: 5</li>
+                            <li>Increment: 1</li>
+                        </ul>
+                        <p>この設定では、VGSの電圧を1V 間隔で0V から 5V までスイープします。VGSが 1Vずつ変化することで、異なるゲート電圧条件下でのトランジスタの動作を観察できます。</p>
+                    </dd>
+                </dl>
+
+                <h4>4.3 シミュレーションコマンドの確認</h4>
+                <p>設定が完了すると、以下のようなシミュレーションコマンドがウィンドウ下部に表示されます。</p>
+                <pre><code>.dc V2 0 5 0.05 V1 0 5 1</code></pre>
+                <p><strong>コマンドの説明:</strong> このコマンドは、VDS (V2)を0V から 5V まで 0.05V 刻みでスイープし、同時にVGS (V1)を 0V から 5V まで 1V 刻みでスイープすることを意味しています。これで、VGS と VDS の変化に基づくトランジスタの特性がシミュレーションできます。</p>
+            </section>
+
+            <section>
+                <h2>5. 回路ファイルの保存</h2>
+                <p>回路を作成したら、シミュレーションを実行する前に必ず回路ファイルを保存します。以下の手順で保存を行います。</p>
+                <h3>5.1 保存の手順</h3>
+                <p>File > Save As を使用し、必ず ドキュメント > LTspice 実習フォルダに保存してください。ツールバーの「保存」ボタンを使用せず、必ず File > Save As を使用して保存を行うようにしてください。</p>
+                <h3>5.2 ファイル名の命名規則</h3>
+                <ul>
+                    <li>ファイル名は指定された形式に従ってください。例えば、「N_1u.asc」など、実習ごとに指定されたファイル名を使用します。</li>
+                    <li>注意:自動生成される Draft○.asc などのファイル名は使用しないようにしましょう。これを防ぐために、File > Save As から手動でファイル名を入力して保存することが重要です。</li>
+                </ul>
+                <h3>5.3 保存後の確認</h3>
+                <ul>
+                    <li>保存した回路図ファイルが指定のフォルダ内に正しく保存されているか確認します。これを怠ると、次回の実習時に正しいファイルが見つからず、作業が中断されることがあります。</li>
+                </ul>
+                <h3>5.4 変更後の保存</h3>
+                <p>回路を変更した場合、必ず再度保存を行いましょう。誤ったファイルを残してしまうと、後から再利用する際に問題が発生します。</p>
+            </section>
+
+            <section>
+                <h2>6. DC 解析の実行</h2>
+                <p>作成した回路図と設定したシミュレーション条件に基づいて、DC解析を実行します。DC解析では、指定した電圧源(V1, V2)のスイープによる回路の動作を確認します。</p>
+                <h3>6.1 シミュレーションの開始</h3>
+                <h4>6.1.1 シミュレーションの実行</h4>
+                <p>ツールバーの「Run」ボタン <img src="images/run_icon.png" alt="Run Icon" style="vertical-align: middle;"> をクリックするか、F9 キーを押してシミュレーションを開始します。</p>
+                <h4>6.1.2 シミュレーション結果の確認</h4>
+                <p>シミュレーションが正常に実行されると、波形ビューワーが自動的に開きます。ここで、回路内の各端子や要素の電圧や電流を確認することができます。</p>
+
+                <h3>6.2 シミュレーション結果の確認</h3>
+                <p>今回は、MOSFET のドレイン電流 IDS を確認することが主な目的です。トランジスタの動作を観察するため、プローブを正しい位置に当てて、ドレイン電流の変化を測定します。</p>
+                <h4>6.2.1 プローブの使用方法と見た目の違い</h4>
+                <p>シミュレーション結果を確認する際、プローブの使い分けが重要です。</p>
+                <dl>
+                    <dt>電圧プローブ:</dt>
+                    <dd>電圧プローブは、回路上の任意のノードで使用できます。カーソルを回路図上の端子(ノード)に合わせると、電圧プローブの形状に変化します。
+                        <ul>
+                            <li>形状:電圧計のようなアイコンに変わります。</li>
+                            <li>表示色:通常、赤色で表示されます。</li>
+                        </ul>
+                    </dd>
+                    <dt>電流プローブ:</dt>
+                    <dd>電流プローブは、部品や素子の端子部分や配線部分でのみ表示されます。カーソルを部品の端子に合わせると、電流プローブの形状に変わります。
+                        <ul>
+                            <li>形状:電流クランプのようなアイコンに変わります。</li>
+                            <li>方向:矢印が表示され、ホット側からコールド側に向かって電流の流れを示します</li>
+                        </ul>
+                    </dd>
+                </dl>
+                <h4>6.2.2 今回のプローブ位置と目的</h4>
+                <p>今回は、ドレイン電流 IDs を測定するために、以下の位置にプローブを当てます。</p>
+                <dl>
+                    <dt>ドレイン端子に電流プローブを当てる:</dt>
+                    <dd>ドレイン端子に電流プローブを当てて、ドレインを流れる電流を測定します。</dd>
+                    <dd>電流プローブは、トランジスタのドレインと電源の間に接続された配線部分に配置します。このプローブを使用することで、電源からドレインを流れる電流がシミュレーション結果に反映されます。</dd>
+                </dl>
+                <img src="images/nmos_circuit_with_probe.png" alt="NMOS Circuit with Probe" style="max-width: 100%; height: auto;">
+                <dl>
+                    <dt>ソース端子の確認:</dt>
+                    <dd>ソース端子がグランドに接続されていることを確認します。ソース端子に電流が正しく流れるかどうかは、シミュレーション結果の信頼性を高めるために重要です。</dd>
+                </dl>
+                <h4>6.2.3 グラフの読み取り</h4>
+                <p>波形グラフを確認し、設定した VGS と VDS に対するトランジスタのドレイン電流 IDS の動作を評価します。グラフ上には、VDS(ドレイン - ソース間電圧)と IDs(ドレイン電流)のプロットが表示され、それぞれの関係性を観察することができます。ドレイン電流がスイープされる VDS に応じてどのように変化するか、また、正しい結果が得られているかを確認します。</p>
+            </section>
+
+            <a href="jisshu1.html" class="back-link">← 実習1の目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実習3：半加算器の設計</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>実習3：半加算器の設計</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="index.html" class="back-link">← 目次に戻る</a>
+
+
+
+            <section>
+                <h2>半加算器の設計</h2>
+                <p>半加算器を設計します。半加算器は、2つの入力 AとBに対して、和(S)と桁上げ(C)の2つの出力を生成する基本的な論理回路です。</p>
+                <h3>1. 半加算器の基本動作</h3>
+                <p>半加算器は、以下の2つの論理演算に基づいて出力を生成します:</p>
+                <ul>
+                    <li><strong>和(S = A + B):</strong> 排他的論理和(XOR)によって、入力AとBが異なる場合にSが1になります。</li>
+                    <li><strong>桁上げ(C = A • B):</strong> 論理積(AND)によって、AとBが両方とも1のときにCが1になります。</li>
+                </ul>
+                <h3>2.真理値表</h3>
+                <img src="images/half_adder_truth_table.png" alt="Half Adder Truth Table" style="max-width: 100%; height: auto;">
+                <p>この真理値表に基づき、和(S)と桁上げ(C)を得るための回路を設計します。</p>
+                <h3>3. 半加算器の構成</h3>
+                <p>テキストでは、INVと2NANDのみを使用して半加算器を構成しています。今回の設計例はあくまで一例であり、他の回路構成も可能です。使用するゲートの制限内で、遅延を最小化する工夫が必要です。</p>
+                <ul>
+                    <li>INV ゲート(インバータ)で信号を反転させます。</li>
+                    <li>2NAND ゲート(2入力 NAND ゲート)で XORや AND の動作を実現します。</li>
+                </ul>
+                <h3>4. 半加算器の回路図</h3>
+                <p>以下に、INV と 2NAND を使って半加算器を構成する一例の回路図を提示します。</p>
+                <ul>
+                    <li><strong>XORの実現:</strong> 2NAND ゲートでXOR 回路を作成します。</li>
+                    <li><strong>AND の実現:</strong> 2NAND ゲートでAND 回路を作成します。</li>
+                </ul>
+                <img src="images/half_adder_circuit.png" alt="Half Adder Circuit" style="max-width: 100%; height: auto;">
+                <p>これを参考に、入力A、Bから出力S、Cを得る回路を構成しますが、最適な回路設計には他のアプローチも考慮できます。</p>
+            </section>
+
+            <section>
+                <h2>半加算器の設計コンテスト</h2>
+                <p>実習3では、設計した半加算器の伝搬遅延時間を評価し、その結果を基に設計コンテストを行います。このコンテストでは、半加算器の伝搬遅延時間を最小化するために工夫された設計が求められ、異なる負荷条件での回路動作が競われます。</p>
+                <h3>1. コンテストの前提条件</h3>
+                <p>前回のインバータと同様に、作成したインバータ、2NAND、およびシンボルがすべて同じフォルダに保存されていることが必要です。このフォルダ構成が正しくない場合、シミュレーションが正しく動作しない可能性があります。必ず、これらのファイルがすべて「LTspice 実習ファイル」内に存在していることを確認してください。</p>
+                <h3>2. 半加算器のシンボルの作成</h3>
+                <p>まず、半加算器のシンボルの中身を作成します。テキストでは、INV と 2NAND で構成されているため、これらを使用して回路を作成します。作成された回路が正しく動作することを確認してください。</p>
+                <h4>回路の保存</h4>
+                <p>回路が完成したら、「HA_sch」という名前で必ず保存してください。保存先は「LTspice 実習フォルダ」です。</p>
+                <img src="images/half_adder_symbol_circuit.png" alt="Half Adder Symbol Circuit" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>シミュレーションファイルの実行</h2>
+                <p>「LTspice 実習ファイル」には、以下の3つのシミュレーションファイルが存在しています:</p>
+                <ul>
+                    <li>HA_sim_x1.asc</li>
+                    <li>HA_sim_x64.asc</li>
+                    <li>HA_sim_x256.asc</li>
+                </ul>
+                <p>これらのファイルの中から、いずれか1つを選択し、実行してください。実行するファイルは負荷条件に応じて変わります(x1 は軽負荷、x256 は重負荷)。</p>
+            </section>
+
+            <section>
+                <h2>実行結果の確認</h2>
+                <p>シミュレーションの結果として、A、B、S、Cの4つの波形が表示されます。テキストではクロック信号もプロービングされていますが、ここではA、B、S、Cの波形があれば十分です。</p>
+                <img src="images/half_adder_simulation_result.waveform.png" alt="Half Adder Simulation Result Waveform" style="max-width: 100%; height: auto;">
+                <h3>波形の表示</h3>
+                <p>シミュレーションの結果として、上段にA、Bの入力信号、下段にS、Cの出力信号が表示されます。この波形が理論値通りに動作していれば、設計は成功です。</p>
+            </section>
+
+            <section>
+                <h2>コンテストの目的と負荷条件</h2>
+                <p>半加算器の設計において、伝搬遅延時間を最小限に抑えることが主要な目標です。伝搬遅延時間が短いほど、回路が高速に動作するため、効率的な設計が高く評価されます。コンテストでは、以下の3つの負荷条件で回路が評価されます。</p>
+                <ul>
+                    <li><strong>ライト級:</strong> Cout = 1</li>
+                    <li><strong>ミドル級:</strong> Cout = 64</li>
+                    <li><strong>ヘビー級:</strong> Cout = 256</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>シミュレーションの実行と伝搬遅延時間の計測</h2>
+                <p>各負荷条件における半加算器の動作を確認するために、シミュレーションファイル(HA_sim_x1, HA_sim_x64, HA_sim_x256)を使用します。以下のステップでシミュレーションを実行し、結果を確認します。</p>
+                <img src="images/spice_error_log_half_adder.png" alt="SPICE Error Log Half Adder" style="max-width: 100%; height: auto;">
+                <h3>1. シミュレーション設定の確認</h3>
+                <p>各負荷条件に対応するシミュレーションファイルを開き、適切な解析設定が行われていることを確認します。</p>
+                <h3>2. 伝搬遅延時間の計測</h3>
+                <p>シミュレーション結果から、入力信号(A、B)の遷移に対する出力信号(S、C)の応答を確認し、各負荷条件での遅延時間を計測します。</p>
+            </section>
+
+            <section>
+                <h2>評価基準</h2>
+                <p>コンテストでは、以下の基準で設計が評価されます。</p>
+                <ul>
+                    <li><strong>伝搬遅延時間の短さ:</strong> 回路の動作が速いほど高評価となります。特に、ヘビー級(Cout = 256)での遅延をいかに最小化できるかが重要です。</li>
+                    <li><strong>設計の工夫:</strong> ゲートの配置やトランジスタサイズの調整など、効率的な設計が評価されます。</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>シミュレーションコマンドの意味と結果の確認</h2>
+                <p>ここでは、シミュレーションのコマンドが持つ意味を説明します。コマンドの内容を理解しないと、シミュレーション結果のどこに注目すれば良いのかが分かりません。テキストでは「ワードパッドで確認する」と記載されていますが、View → SPICE Error Log から結果を表示できます。</p>
+                <pre><code>.meas tran tpd_sr_00_01 trig V(clk) val=0.5 rise=1 targ V(s) val=0.5 rise=1
+.meas tran tpd_sf_01_11 trig V(clk) val=0.5 rise=2 targ V(s) val=0.5 fall=1
+.meas tran tpd_sr_11_10 trig V(clk) val=0.5 rise=3 targ V(s) val=0.5 rise=2
+.meas tran tpd_sf_10_00 trig V(clk) val=0.5 rise=4 targ V(s) val=0.5 fall=2
+.meas tran tpd_sr_00_10 trig V(clk) val=0.5 rise=5 targ V(s) val=0.5 rise=3
+.meas tran tpd_sf_10_11 trig V(clk) val=0.5 rise=6 targ V(s) val=0.5 fall=3
+.meas tran tpd_sr_11_01 trig V(clk) val=0.5 rise=7 targ V(s) val=0.5 rise=4
+.meas tran tpd_sf_01_00 trig V(clk) val=0.5 rise=8 targ V(s) val=0.5 fall=4
+.meas tran tpd_cr_01_11 trig V(clk) val=0.5 rise=2 targ V(c) val=0.5 rise=1
+.meas tran tpd_cf_11_10 trig V(clk) val=0.5 rise=3 targ V(c) val=0.5 fall=1
+.meas tran tpd_cr_10_11 trig V(clk) val=0.5 rise=6 targ V(c) val=0.5 rise=2
+.meas tran tpd_cf_11_01 trig V(clk) val=0.5 rise=7 targ V(c) val=0.5 fall=2</code></pre>
+                <p>以下は、半加算器の遅延時間に関する各コマンドの説明です。</p>
+                <ul>
+                    <li><strong>tpd_sr_00_01:</strong> クロックが 0.5Vになる最初の立ち上がりの時点から、出力Sが0.5Vになる最初の立ち上がりまでの時間。</li>
+                    <li><strong>tpd_sf_01_11:</strong> クロックが 0.5Vになる2回目の立ち上がりの時点から、出力Sが0.5Vになる最初の立ち下がりまでの時間。</li>
+                    <li><strong>tpd_sr_11_10:</strong> クロックが 0.5V になる3回目の立ち上がりの時点から、出力 S が 0.5V になる2回目の立ち上がりまでの時間。</li>
+                    <li><strong>tpd_sf_10_00:</strong> クロックが 0.5Vになる4回目の立ち上がりの時点から、出力Sが0.5V になる2回目の立ち下がりまでの時間。</li>
+                    <li><strong>tpd_sr_00_10:</strong> クロックが 0.5Vになる5回目の立ち上がりの時点から、出力Sが0.5V になる3回目の立ち上がりまでの時間。</li>
+                    <li><strong>tpd_sf_10_11:</strong> クロックが 0.5V になる6回目の立ち上がりの時点から、出力Sが0.5V になる3回目の立ち下がりまでの時間。</li>
+                    <li><strong>tpd_sr_11_01:</strong> クロックが 0.5Vになる7回目の立ち上がりの時点から、出力Sが0.5V になる4回目の立ち上がりまでの時間。</li>
+                    <li><strong>tpd_sf_01_00:</strong> クロックが 0.5Vになる8回目の立ち上がりの時点から、出力Sが0.5V になる4回目の立ち下がりまでの時間。</li>
+                    <li><strong>tpd_cr_01_11:</strong> クロックが 0.5Vになる2回目の立ち上がりの時点から、出力Cが0.5Vになる最初の立ち上がりまでの時間。</li>
+                    <li><strong>tpd_cf_11_10:</strong> クロックが 0.5V になる3回目の立ち上がりの時点から、出力 C が 0.5V になる最初の立ち下がりまでの時間。</li>
+                    <li><strong>tpd_cr_10_11:</strong> クロックが 0.5Vになる6回目の立ち上がりの時点から、出力Cが0.5V になる2回目の立ち上がりまでの時間。</li>
+                    <li><strong>tpd_cf_11_01:</strong> クロックが 0.5Vになる7回目の立ち上がりの時点から、出力Cが0.5V になる2回目の立ち下がりまでの時間。</li>
+                </ul>
+            </section>
+
+            <a href="index.html" class="back-link">← 目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

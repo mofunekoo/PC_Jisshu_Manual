@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMOS論理回路シミュレーション：インバータ回路</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>CMOS論理回路シミュレーション：インバータ回路</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+
+            <section>
+                <h2>回路図の作成</h2>
+                <p>以下のような CMOS インバータ回路を作成します。PMOS とNMOS、DC 解析用の電源を配置して配線を行います。</p>
+                <img src="images/inverter_circuit.png" alt="Inverter Circuit" style="max-width: 100%; height: auto;">
+                <img src="images/cmos_inverter_schematic.png" alt="CMOS Inverter Schematic" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>PMOS, NMOS の設定</h2>
+                <ul>
+                    <li>Model Name: P_50n (PMOS), N_50n (NMOS)</li>
+                    <li>Length (L): 50nm</li>
+                    <li>Width (W): 500nm</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>電源の設定</h2>
+                <ul>
+                    <li>V1: VIN入力、DC解析で0Vから 1V までスイープ</li>
+                    <li>V2: VDD 電源、1V 固定</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>シミュレーション設定</h2>
+                <p>メニューの Simulate > Edit Simulation Cmd を開き、DC 解析の設定を行い、シミュレーションを実行してください。</p>
+                <img src="images/simulation_settings_inverter.png" alt="Simulation Settings Inverter" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>シミュレーション結果</h2>
+                <img src="images/simulation_result_inverter.png" alt="Simulation Result Inverter" style="max-width: 100%; height: auto;">
+                <p>青色の線は、入力電圧 Vin が 0V から 1V まで 0.01V ずつ変化している様子を示しています。</p>
+                <p>緑色の線は出力電圧を示しており、入力電圧が0V のとき出力は1V、入力が 1V になると出力が0Vになることが確認できます。</p>
+            </section>
+
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

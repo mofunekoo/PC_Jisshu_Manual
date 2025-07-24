@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMOS論理回路シミュレーション：2NAND回路</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>CMOS論理回路シミュレーション：2NAND回路</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+
+            <section>
+                <h2>2NAND 回路の作成</h2>
+                <h3>回路図作成の参考</h3>
+                <p>回路図はテキストを参考にして作成できますが、講義3の13ページを参考にすると、よりわかりやすく作成できます。講義で使用した回路図に基づいて設計を進めてください。</p>
+                <img src="images/2nand_circuit.png" alt="2NAND Circuit" style="max-width: 100%; height: auto;">
+                <img src="images/cmos_2nand_schematic.png" alt="CMOS 2NAND Schematic" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>MOS, NMOS の設定</h2>
+                <ul>
+                    <li>Model Name: P_50n (PMOS), N_50n (NMOS)</li>
+                    <li>Length (L): 50nm</li>
+                    <li>Width (W): 500nm</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>電源の設定</h2>
+                <ul>
+                    <li>V1: A入力、DC解析で0Vから 1V までスイープ</li>
+                    <li>V3: B入力、1V 固定</li>
+                    <li>V2: VDD 電源、1V 固定</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>シミュレーション設定</h2>
+                <p>メニューの Simulate > Edit Simulation Cmd を開き、DC解析を設定してシミュレーションを実行します。</p>
+                <img src="images/simulation_settings_2nand.png" alt="Simulation Settings 2NAND" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>回路の保存</h2>
+                <p>2NAND 回路も、回路図が完成した時点で必ず「ドキュメント > LTspice 実習フォルダ」に「2NAND」という名前で保存してください。</p>
+            </section>
+
+            <section>
+                <h2>V3 (B入力)を1V固定し、V1 (A入力)を0~1V までスイープ</h2>
+                <p>まず、B入力を1V に固定し、A入力を0V から 1V までスイープします。その結果、真理値表の赤枠で囲んだ通り、Aが0のとき出力は1、Aが1のとき出力は0となることが確認できます。</p>
+                <img src="images/2nand_truth_table.png" alt="2NAND Truth Table" style="max-width: 100%; height: auto;">
+                <h2>V3（B入力）を0V固定し、V1（A入力）を0～1Vまでスイープ</h2>
+                <p>次に、B入力を0Vに固定し、A入力を0Vから1Vまでスイープします。この場合、出力波形が少し変な形に見えることがありますが、グラフの左側の数値に注目すると、Aが0のときもAが1のときも、出力は1になることがわかります。</p>
+                <img src="images/2nand_result_v3_0v.png" alt="2NAND Result V3 0V" style="max-width: 100%; height: auto;">
+            </section>
+
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

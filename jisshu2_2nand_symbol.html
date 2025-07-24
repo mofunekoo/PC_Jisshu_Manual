@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMOS論理回路シミュレーション：2NAND回路のSymbol</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>CMOS論理回路シミュレーション：2NAND回路のSymbol</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+
+            <section>
+                <h2>2NAND 回路のシンボル作成</h2>
+                <p>次に、2NAND 回路のシンボルを作成します。手順はインバータ回路と同様です。</p>
+                <h3>1. 2NAND 回路の準備</h3>
+                <p>すでに作成した「2NAND.asc」の回路を開き、シンボル化の準備を行います。</p>
+
+                <h4>電源やグランドの消去</h4>
+                <p>2NAND 回路からも、電源(VDD)やグランド(GND)のシンボルを削除します。</p>
+                <img src="images/2nand_delete_power_gnd.png" alt="2NAND Delete Power and GND" style="max-width: 100%; height: auto;">
+                <p>Delete キーもしくは <img src="images/scissors_icon.png" alt="Scissors Icon" style="vertical-align: middle;"> を押して、消したい電源や配線をクリックします。削除後、回路図は図のように電源と不要な配線が消去された状態になります。</p>
+            </section>
+
+            <section>
+                <h2>入出力ピンの設定</h2>
+                <p>電源やグランドを削除したら、2NAND 回路にも適切に入出力ピンを設定します。</p>
+                <img src="images/2nand_symbol_pins.png" alt="2NAND Symbol Pins" style="max-width: 100%; height: auto;">
+                <p>PIN の配置が終了すると図のようになります。</p>
+            </section>
+
+            <section>
+                <h2>回路の保存</h2>
+                <p>2NAND 回路のシンボルを作成する前に、回路図を「2NAND_sch」という名前で保存します。テキストには「2NAND_sch.asc」と書かれていますが、「asc」は入力する必要はありません。</p>
+            </section>
+
+            <section>
+                <h2>2. シンボルの作成手順</h2>
+                <p>メニューバーの Hierarchy > Open this sheet's symbol を選択し、シンボルを作成します。自動生成のメッセージが表示されたら、「はい」を選択してシンボルを生成します。</p>
+
+                <h3>PIN 配置の調整</h3>
+                <p>シンボルが生成されたら、ツールバーの PIN 移動ツール <img src="images/pin_move_tool_icon.png" alt="PIN Move Tool Icon" style="vertical-align: middle;"> を使用して、PIN を使いやすい位置に調整します。調整後、必ず「2NAND_sch」として保存します。ここでの保存が不十分だと、正しいシンボルが作成されないため注意してください。</p>
+            </section>
+
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

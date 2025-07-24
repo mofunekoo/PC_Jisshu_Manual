@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMOS論理回路シミュレーション：課題1 AND回路</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>CMOS論理回路シミュレーション：課題1 AND回路</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+
+            <section>
+                <h2>実習2 課題1</h2>
+                <p>課題1では、インバータ回路と 2NAND 回路を用いて AND 回路を作成することを目的としています。AND 回路は、2つの入力がともに「1」である場合に出力が「1」になる基本的な論理回路です。この課題では、AND 回路の構築方法とその動作を確認します。</p>
+            </section>
+
+            <section>
+                <h2>4.3.1 回路構成の概要</h2>
+                <p>AND 回路は、2つの NAND ゲートにインバータを追加することで作成されます。NAND ゲートは、入力が両方「1」のときに出力が「0」になるため、その出力にインバータを接続することで AND ゲートとして機能させます。</p>
+                <h3>使用する回路:</h3>
+                <ul>
+                    <li>インバータ回路(INV_sch)</li>
+                    <li>2NAND 回路(2NAND_sch)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>4.3.2 回路図の作成</h2>
+                <h3>1. 階層化された回路の利用</h3>
+                <p>先に作成したインバータと2NANDのシンボルを使用して、AND 回路を構築します。以下の手順に従って回路図を作成してください。</p>
+                <h4>シンボルの配置</h4>
+                <p>「Select Component」ツールから、保存された「INV_sch」と「2NAND_sch」を回路図に配置します。シンボルを適切に接続し、入力端子と出力端子を設定します。</p>
+                <h4>入力の設定</h4>
+                <p>AとBの2つの入力を設定します。A入力は 2NANDの入力端子1に、B入力は 2NANDの入力端子2に接続します。</p>
+                <h4>インバータの配置</h4>
+                <p>2NAND の出力をインバータに接続し、インバータの出力が最終的な AND 回路の出力となるように配線します。</p>
+                <img src="images/and_circuit_layout.png" alt="AND Circuit Layout" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>2. 回路の保存</h2>
+                <p>完成した AND 回路を「AND_sch」として保存してください。</p>
+            </section>
+
+            <section>
+                <h2>4.3.3 シミュレーションの設定</h2>
+                <img src="images/and_simulation_settings_circuit.png" alt="AND Simulation Settings Circuit" style="max-width: 100%; height: auto;">
+                <h3>シミュレーション条件</h3>
+                <p>A入力を0Vから 1V までスイープし、B入力を固定してAND 回路の動作を確認します。</p>
+            </section>
+
+            <section>
+                <h2>4.3.4 シミュレーション結果の確認</h2>
+                <p>シミュレーション結果から、以下の動作が確認できます。</p>
+                <ul>
+                    <li><strong>AとBが0の場合:</strong> 2NAND 回路では出力が1となり、その後インバータで反転され、最終的な出力は0になります。</li>
+                    <li><strong>Aが1、Bが0の場合:</strong> 同様に 2NAND の出力が1となり、インバータにより反転され、最終的な出力は0となります。</li>
+                    <li><strong>Aが0、Bが1の場合:</strong> 2NAND の出力は1ですが、インバータで反転され、出力は0です。</li>
+                    <li><strong>AとBが1の場合:</strong> 2NAND の出力は0となり、インバータによって反転され、最終的な出力は1になります。</li>
+                </ul>
+                <img src="images/and_simulation_result_graph.png" alt="AND Simulation Result Graph" style="max-width: 100%; height: auto;">
+            </section>
+
+            <a href="jisshu2.html" class="back-link">← CMOS論理回路シミュレーションの目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

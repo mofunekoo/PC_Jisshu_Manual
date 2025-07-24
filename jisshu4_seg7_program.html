@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>seg7_demimal_1digitのプログラムの説明</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>seg7_demimal_1digitのプログラムの説明</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu4.html" class="back-link">← 実習4の目次に戻る</a>
+
+            <section>
+                <h2>実習4: 2進数を10進数に表示するプログラム (1桁)</h2>
+                <p>//以降はコメントです。コメントはわかりやすくするためのものなので、無理に書く必要はありません。</p>
+            </section>
+
+            <section>
+                <h2>module bin2dec (CLOCK_50, KEY, SW, HEX0);</h2>
+                <pre><code>module bin2dec (CLOCK_50, KEY, SW, HEX0);
+
+input CLOCK_50; // ボードクロック 50MHz
+input [3:0] KEY; // rstn(リセット)用プッシュスイッチ
+input [17:0] SW; //2進数入力用スライドスイッチ
+output [6:0] HEX0; // 出力用 7 セグ LED
+
+seg7_decimal_1digit u0(.clk(CLOCK_50), .rstn(KEY[0]), .in(SW[3:0]), .out0(HEX0));
+
+endmodule</code></pre>
+                <h3>ポート宣言:</h3>
+                <p>入力と出力は必ず基板に対応した表示にする必要があります。</p>
+                <p>input [17:0] SW;は input [3:0] SW;という形式でも問題ありません。入力信号は4ビット(1001まで)しか使用しないため、4ビットの指定で十分です。</p>
+                <p>seg7_decimal_1digit モジュールを呼びだします。CLOCK_50 は seg7_decimal_1digit 内の clk に対応しています。</p>
+            </section>
+
+            <section>
+                <h2>module seg7_decimal_1digit (clk, rstn, in, out0);</h2>
+                <pre><code>module seg7_decimal_1digit (clk, rstn, in, out0);
+
+input clk, rstn;
+input [3:0] in; // 10進数に変換したい2進数
+output [6:0] out0; // 各7セグ LED が表示すべき10進数
+
+reg [3:0] tmp_reg; //変換用計算用レジスタ
+reg [3:0] digit0; //各7セグ LED が表示すべき10進数
+
+seg7_decorder d0(.in(digit0), .out(out0));
+
+always @(posedge clk or negedge rstn) begin
+if (!rstn) begin
+tmp_reg <= in;
+digit0 <= 4'd0;
+end else begin
+digit0 <= tmp_reg;
+end
+end
+
+endmodule</code></pre>
+                <p>in には、スイッチで入力された2進数が入ります。</p>
+                <p>reg はレジスタを表し、記憶素子を意味します。詳細は「Verilog-HDLの基本文法」を参照してください。</p>
+                <p>if (rstn)だと、rstn=1</p>
+                <p>if (!rstn)は論理否定で rstn=0 のときに動作し、このとき tmp_reg に in の値を、digit0 に 0を代入します。</p>
+                <p>if (rstn == 1'b0) や if (~rstn)という記述でも同様の動作になります。</p>
+                <p>リセットボタンが押されていなければ、digit0 には tmp_reg の値、つまりスイッチで入力した値が代入されます。</p>
+            </section>
+
+            <section>
+                <h2>module seg7_decorder (in, out);</h2>
+                <pre><code>module seg7_decorder (in, out);
+
+input [3:0] in;
+output [6:0] out;
+
+assign out =
+(in == 4'd0)? 7'b1000000:
+(in == 4'd1)? 7'b1111001:
+(in == 4'd2)? 7'b0100100:
+(in == 4'd3)? 7'b0110000:
+(in == 4'd4)? 7'b0011001:
+(in == 4'd5)? 7'b0010010:
+(in == 4'd6)? 7'b0000010:
+(in == 4'd7)? 7'b1111000:
+(in == 4'd8)? 7'b0000000:
+(in == 4'd9)? 7'b0010000: 7'b1111111;
+
+endmodule</code></pre>
+                <p>in には digit0 が代入されます。つまり、現在はスイッチで入力された2進数が in に入っています。</p>
+                <p>out には、7セグメントディスプレイのどの部分を点灯させるかを指示する信号が入ります。0が点灯する部分を示し、1が消灯する部分を示します。</p>
+                <p>このデコーダーでは、入力が0から9までの2進数に対応して、7セグメント LED の表示パターンが決定されます。それ以外の入力は全て 7'b1111111(点灯なし)とされます。</p>
+                <img src="images/7_segment_displays.png" alt="7-segment Displays" style="max-width: 100%; height: auto;">
+            </section>
+
+            <a href="jisshu4.html" class="back-link">← 実習4の目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

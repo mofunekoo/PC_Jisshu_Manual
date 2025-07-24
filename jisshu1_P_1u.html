@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実習1：P_1u 詳細</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>実習1：P_1u 詳細</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu1.html" class="back-link">← 実習1の目次に戻る</a>
+
+            <section>
+                <h2>実習1 課題1: PMOSトランジスタの VDS-IDS 特性</h2>
+                <p>実習では、NMOS トランジスタのVDS-IDS特性を確認しましたが、この課題では PMOS トランジスタの特性を解析します。V1とV2の電圧の向きに注意が必要です。上がマイナスになるように設定します。電圧源を配置したら Ctrl + R を押して回転させてください。</p>
+                <img src="images/pmos_circuit.png" alt="PMOS Circuit" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>手順</h2>
+                <h3>1. PMOS のシンボルを配置</h3>
+                <p>回路図に PMOS シンボルを追加します。</p>
+
+                <h3>2. PMOS のパラメータ設定</h3>
+                <p>PMOS シンボルを右クリックし、以下のパラメータを設定します。</p>
+                <pre><code>Model Name: P_1u
+Length (L): 1 μ
+Width (W): 10 μ</code></pre>
+
+                <h3>3. 回路図の作成</h3>
+                <p>グランドと3つの電源(V1, V2, V3)を配置します。</p>
+
+                <h3>4. 電源のパラメータ設定</h3>
+                <p>各電源を右クリックし、以下の値を設定します。</p>
+                <pre><code>V1: 0V
+V2: 0V
+V3: 5V</code></pre>
+
+                <h3>5. 配線</h3>
+                <p>ツールバーの配線アイコン <img src="images/wire_icon.png" alt="Wire Icon" style="vertical-align: middle;"> (もしくは F3)をクリックして、部品を正しく接続します。</p>
+            </section>
+
+            <section>
+                <h2>6. DC 解析の準備</h2>
+                <p>メニューバーから Simulate > Edit Simulation Cmd を選択し、「DC Sweep」を設定します。</p>
+                <p>1st Source: VDS (V2)</p>
+                <p>2nd Source: VGS (V1)</p>
+                <img src="images/dc_sweep_settings_pmos.png" alt="DC Sweep Settings PMOS" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>7. 回路図ファイルの保存</h2>
+                <p>File > Save As を使って、必ずドキュメント > LTspice 実習フォルダに「P_1u」という名前で保存してください。ツールバーの保存ボタン <img src="images/save_icon.png" alt="Save Icon" style="vertical-align: middle;"> では「Draft」という名前で自動保存されてしまうため、必ず「File > Save As」を使用してください。</p>
+                <img src="images/save_as_dialog.png" alt="Save As Dialog" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>8. DC 解析の実行</h2>
+                <p>ツールバーの実行 <img src="images/run_icon.png" alt="Run Icon" style="vertical-align: middle;"> を押してシミュレーションを開始します。</p>
+                <h3>プローブの使用</h3>
+                <p>カーソルが電流プローブ(先端が○になっている形状)に変わったことを確認し、ドレイン端子に配置してドレイン電流を測定します。間違えて電圧プローブを使用しないように注意してください。</p>
+                <h3>シミュレーション結果</h3>
+                <img src="images/simulation_result_pmos.png" alt="Simulation Result PMOS" style="max-width: 100%; height: auto;">
+                <p>シミュレーション結果が正しく表示されない場合はプローブの位置や設定を再確認してください。</p>
+            </section>
+
+            <a href="jisshu1.html" class="back-link">← 実習1の目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

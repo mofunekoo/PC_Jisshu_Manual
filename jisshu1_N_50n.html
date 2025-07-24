@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実習1：N_50n 詳細</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>実習1：N_50n 詳細</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="jisshu1.html" class="back-link">← 実習1の目次に戻る</a>
+
+            <section>
+                <h2>実習1 課題2: 短チャネル MOSFET のシミュレーション</h2>
+                <p>チャネル長が短い NMOS トランジスタの特性を確認します。最初に作成した NMOS の回路を利用し、チャネル長が 50nm、チャネル幅が500nm のトランジスタのシミュレーションを実施します。</p>
+            </section>
+
+            <section>
+                <h2>1. トランジスタのパラメータ設定</h2>
+                <p>NMOSトランジスタのシンボル上にカーソルを置き、右クリックしてパラメータ設定ウィンドウを表示します。以下のパラメータを入力します。</p>
+                <img src="images/nmos_50n_parameters.png" alt="NMOS 50n Parameters" style="max-width: 100%; height: auto;">
+                <ul>
+                    <li>チャネル長 (L): 50nm</li>
+                    <li>チャネル幅(W): 500nm</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>2. DC 解析の準備</h2>
+                <p>メニューの Simulate > Edit Simulation Cmd を選択し、「DC Sweep」を設定します。</p>
+                <h3>1st Source: VDS (V2)</h3>
+                <img src="images/dc_sweep_settings_nmos_50n_1.png" alt="DC Sweep Settings NMOS 50n 1" style="max-width: 100%; height: auto;">
+                <h3>2nd Source: VGS (V1)</h3>
+                <img src="images/dc_sweep_settings_nmos_50n_2.png" alt="DC Sweep Settings NMOS 50n 2" style="max-width: 100%; height: auto;">
+                <p>開始値、終了値、増加分を設定して解析の準備を行います。</p>
+                <pre><code>.dc V2 0 1 0.01 V1 0 1 0.2</code></pre>
+                <img src="images/nmos_50n_circuit.png" alt="NMOS 50n Circuit" style="max-width: 100%; height: auto;">
+            </section>
+
+            <section>
+                <h2>3. 回路図ファイルの保存</h2>
+                <p>作成した回路図をシミュレーションする前に、必ず正しい手順で保存を行います。</p>
+                <h3>1. 保存の手順</h3>
+                <p>File > Save As を使用し、「ドキュメント > LTspice 実習フォルダ」に保存します。必ず Save As を使用して保存を行い、ツールバーの「保存」ボタンで自動生成される Draft○.asc などの名前を使用しないようにしてください。</p>
+                <h3>2. ファイル名の命名規則</h3>
+                <p>ファイル名は指定された形式に従ってください。例えば、N_50n.ascやP_1u.ascなど、実習ごとに指定された名前を使用します。</p>
+                <h3>3. 上書き保存をしない</h3>
+                <p>保存を行う際、上書き保存をしないように注意してください。上書き保存をすると、過去のデータや回路が消えてしまう可能性があります。異なるバージョンを保存する場合は、新しい名前で保存するようにしてください(例: N_50n_ver2.asc)。</p>
+                <h3>4. 保存後の確認</h3>
+                <p>保存した回路図ファイルが指定フォルダに正しく保存されているか確認します。これを怠ると、次回の実習時にファイルが見つからず、作業が中断されることがあります。</p>
+            </section>
+
+            <section>
+                <h2>4. DC 解析の結果表示</h2>
+                <img src="images/nmos_50n_result.png" alt="NMOS 50n Result" style="max-width: 100%; height: auto;">
+            </section>
+
+            <a href="jisshu1.html" class="back-link">← 実習1の目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>

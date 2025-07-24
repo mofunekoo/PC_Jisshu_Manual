@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verilog-HDLの基本文法</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Verilog-HDLの基本文法</h1>
+    </header>
+    <div class="container">
+        <main>
+            <a href="index.html" class="back-link">← 目次に戻る</a>
+
+            <section>
+                <h2>Verilog-HDLの概要</h2>
+                <p>Verilog-HDLは、デジタル回路を設計・記述するための言語で、ハードウェアの動作を効率的に記述することができます。ここでは、代表的な構文や基本的な使用法を詳しく説明します。</p>
+            </section>
+
+            <section>
+                <h2>1. モジュールの基本構造</h2>
+                <h3>モジュール構造</h3>
+                <p>回路を記述する際の基本構造は「モジュール」です。<code>module</code>と<code>endmodule</code>で囲まれた部分が1つのモジュールになります。実習では、モジュール名を絶対に変更しないように注意してください。</p>
+                <p>Verilog-HDLの基本単位はモジュールです。モジュールは、入力と出力を持つ回路ブロックを表します。Verilogにおけるモジュールは、C言語の関数のような役割を果たし、複数のモジュールを組み合わせて複雑な回路を設計します。</p>
+                <h4>構文:</h4>
+                <pre><code>module モジュール名 (入出力1, 入出力2, ...);
+    // 動作内容を記述
+endmodule</code></pre>
+            </section>
+
+            <section>
+                <h2>2. ポート宣言</h2>
+                <p>モジュールの入力・出力の方向とビット幅を定義します。</p>
+                <h4>構文:</h4>
+                <pre><code>input [ビット幅:0] 信号名;
+output [ビット幅:0] 信号名;</code></pre>
+                <h4>例:</h4>
+                <pre><code>module bin2dec (CLOCK_50, KEY, SW, HEX0);
+    input CLOCK_50;     // ボードクロック
+    input [3:0] KEY;    // リセット用スイッチ
+    input [17:0] SW;    // スライドスイッチ (2進数入力)
+    output [6:0] HEX0;   // 7セグメントLED出力
+
+    // 内部の動作や処理をここに記述
+endmodule</code></pre>
+                <p>この例では、<code>input</code>が入力信号、<code>output</code>が出力信号を示し、その後にビット幅と信号名が続きます。例えば、SWは18ビットの入力信号です。これらの信号名はアルテラのボードに対応するため、勝手に変更しないように注意してください。</p>
+            </section>
+
+            <section>
+                <h2>3. always 文</h2>
+                <p><code>always</code>文は、特定の条件（クロックやリセット）に基づいて、回路の動作を記述する構文です。<code>always</code>ブロックは、主に順序回路（フリップフロップなどのクロックに依存する回路）を記述するために使用されます。</p>
+                <h4>構文:</h4>
+                <pre><code>always @(条件文) begin
+    // 動作内容を記述
+end</code></pre>
+                <h4>例:</h4>
+                <pre><code>always @(posedge CLOCK_50 or negedge KEY[0]) begin
+    if (!KEY[0]) begin
+        // リセット時の処理
+    end else begin
+        // クロック立ち上がり時の処理
+    end
+end</code></pre>
+                <p><code>posedge</code>はクロックの立ち上がりエッジ、<code>negedge</code>はリセットボタンの押下など、条件に応じた動作を指定します。</p>
+            </section>
+
+            <section>
+                <h2>4. 条件分岐 (if, if-else 文)</h2>
+                <p>Verilog-HDLでは、<code>if</code>文を使用して、条件に応じて回路の動作を変えることができます。複数の条件を持つ場合には、<code>else if</code>や<code>else</code>を組み合わせて記述します。</p>
+                <h4>構文:</h4>
+                <pre><code>if(条件文1) begin
+    // 条件文1が真のときの動作
+end else if (条件文2) begin
+    // 条件文2が真のときの動作
+end else begin
+    // どちらの条件も満たされないときの動作
+end</code></pre>
+                <h4>例:</h4>
+                <pre><code>always @(posedge CLOCK_50) begin
+    if (SW == 4'b0000) begin
+        HEXO <= 7'b1000000; // 入力が0のときの動作
+    end else if (SW == 4'b0001) begin
+        HEXO <= 7'b1111001; // 入力が1のときの動作
+    end else begin
+        HEXO <= 7'b1111111; // その他の場合
+    end
+end</code></pre>
+            </section>
+
+            <section>
+                <h2>5. reg型とwire型 (ネット型)</h2>
+                <p>Verilog-HDLでは、内部で使用する信号を<code>reg</code>や<code>wire</code>として宣言します。</p>
+                <dl>
+                    <dt><code>reg</code>型:</dt>
+                    <dd>クロックやリセット信号に依存する順序回路の内部信号に使用します。<code>always</code>ブロック内での値の保持に使います。</dd>
+                    <dt><code>wire</code>型:</dt>
+                    <dd>組み合わせ回路の信号に使用します。即時的な値の伝達に使用され、値の保持はしません。</dd>
+                </dl>
+                <h4>構文:</h4>
+                <pre><code>reg [ビット幅:0] 信号名;
+wire [ビット幅:0] 信号名;</code></pre>
+                <h4>例:</h4>
+                <pre><code>reg [3:0] tmp_reg;    // 4ビットのレジスタ
+wire [6:0] seg_output; // 7ビットのワイヤ(即時出力)</code></pre>
+            </section>
+
+            <section>
+                <h2>6. 複数ビット信号</h2>
+                <p>複数ビット信号を宣言する際は、大括弧<code>[]</code>を使います。大括弧の左側には最上位ビット(MSB: Most Significant Bit)、右側には最下位ビット(LSB: Least Significant Bit)を指定します。</p>
+                <h4>例:</h4>
+                <pre><code>input [3:0] KEY;    // リセット用プッシュスイッチ
+input [17:0] SW;    // 2進数入力用スライドスイッチ
+output [6:0] HEX0;   // 出力用7セグLED</code></pre>
+            </section>
+
+            <section>
+                <h2>7. インスタンス化</h2>
+                <p>他のモジュールを呼び出して使用することをインスタンス化といいます。他のモジュールを呼び出して再利用し、大規模な回路設計を効率化します。</p>
+                <h4>構文:</h4>
+                <pre><code>モジュール名 インスタンス名 (.ポート名(接続信号),...);</code></pre>
+                <h4>例:</h4>
+                <pre><code>seg7_decimal_1digit u0(.clk(CLOCK_50), .rstn(KEY[0]), .in(SW[3:0]), .out0(HEX0));</code></pre>
+            </section>
+
+            <section>
+                <h2>8. assign 文</h2>
+                <p><code>assign</code>文は、組み合わせ回路において信号をリアルタイムで計算・出力する際に使用します。組み合わせ論理に対応する式を記述し、即時的な出力を行います。</p>
+                <h4>構文:</h4>
+                <pre><code>assign 出力信号 = (条件文) ? 値1 : 値2;</code></pre>
+                <h4>例:</h4>
+                <pre><code>assign seg_output = (SW == 4'b0000) ? 7'b1000000 : 7'b1111111;</code></pre>
+            </section>
+
+            <section>
+                <h2>9. 非同期リセットと同期リセット</h2>
+                <p>次の表現は、非同期リセットの定型文です。</p>
+                <pre><code>always @(posedge clk or negedge rstn) begin</code></pre>
+                <p>この文は、クロックの立ち上がりか、リセットボタンが押されたときに処理を実行するという意味です。非同期リセットはクロックに関係なく、リセットボタンが押されたときに動作します。そのため、初期化が簡単ですが、チップ全体にリセット信号を伝える必要があるため、回路設計が複雑になることがあります。</p>
+                <p>同期リセットは、クロックの立ち上がり時にリセットボタンが押された場合にのみリセットが行われます。これにより、クロックが必要な場合のシミュレーション時間が長くなる可能性があります。</p>
+                <h4>例:</h4>
+                <pre><code>always @(posedge clk) begin
+    if (rstn == 1'b0)</code></pre>
+            </section>
+
+            <section>
+                <h2>10. <= (ノンブロッキング代入)と = (ブロッキング代入)</h2>
+                <p>Verilogでは、信号の代入方法として<code><=</code>（ノンブロッキング代入）と<code>=</code>（ブロッキング代入）を使い分けます。</p>
+                <dl>
+                    <dt>ノンブロッキング代入 (<code><=</code>):</dt>
+                    <dd>順序回路において使用され、並行して複数の代入を行う際に使います。</dd>
+                    <dt>ブロッキング代入 (<code>=</code>):</dt>
+                    <dd>組み合わせ回路において使用され、1行ずつ順番に代入が行われます。</dd>
+                </dl>
+                <h4>例:</h4>
+                <pre><code>// ノンブロッキング代入 (順序回路)
+always @(posedge CLOCK_50) begin
+    tmp_reg <= SW;
+end
+
+// ブロッキング代入 (組み合わせ回路)
+assign seg_output = (SW == 4'b0000) ? 7'b1000000 : 7'b1111111;</code></pre>
+                <p>今回の演習では、<code>always</code>文の中では必ず<code><=</code>ノンブロッキング代入を使用し、<code>assign</code>文では<code>=</code>ブロッキング代入を使います。このように区別して覚えてください。</p>
+            </section>
+
+            <section>
+                <h2>11. 数値表現</h2>
+                <p>Verilog-HDLでは、数値をビット幅と基数を指定して表現します。</p>
+                <h4>構文:</h4>
+                <pre><code>&lt;ビット幅&gt;&lt;基数&gt;&lt;数値&gt;</code></pre>
+                <p>それぞれの要素は以下の意味を持ちます:</p>
+                <dl>
+                    <dt>ビット幅:</dt>
+                    <dd>数値が表現されるビットの長さを指定します。このビット幅に収まるように、数値が自動的に調整されます。ビット幅を省略した場合、デフォルトで32ビットとして扱われます。</dd>
+                    <dt>基数:</dt>
+                    <dd>数値がどの進数で表されているかを指定します。基数は次の記号で表します:
+                        <ul>
+                            <li><code>b</code>: 2進数 (binary)</li>
+                            <li><code>o</code>: 8進数 (octal)</li>
+                            <li><code>d</code>: 10進数 (decimal)</li>
+                            <li><code>h</code>: 16進数 (hexadecimal)</li>
+                        </ul>
+                        <p>なお、基数は小文字で表記するのが一般的ですが、大文字でも問題ありません。</p>
+                    </dd>
+                    <dt>数値:</dt>
+                    <dd>指定された基数で表される実際の数値を記述します。数値がビット幅よりも小さい場合、先頭に0が自動的に補完されます。ビット幅よりも大きい場合は、数値が切り詰められます。</dd>
+                </dl>
+                <h4>例:</h4>
+                <pre><code>4'd0      // 4ビット幅の10進数0
+7'b1000000  // 7ビット幅の2進数1000000
+16'h1A3F  // 16 ビット幅の16進数 1A3F
+8'o17     // 8 ビット幅の8進数17</code></pre>
+                <h4>詳しい解説:</h4>
+                <dl>
+                    <dt>「4'd0」</dt>
+                    <dd>4ビット幅で、基数は d(10進数)、数値は0です。これにより、4ビットの10進数「0」が表されます。数値が4ビット幅を超えないため、0がそのまま使用されます。</dd>
+                    <dt>「7'b1000000」</dt>
+                    <dd>7ビット幅で、基数はb(2進数)、数値は1000000です。7ビット幅の範囲内でこの数値が表され、これは2進数「1000000」に対応する値です。10進数に変換すると、これは64となります。</dd>
+                    <dt>「16'h1A3F」</dt>
+                    <dd>16ビット幅で、基数は h(16進数)、数値は1A3Fです。この場合、1A3Fは16進数で表されており、これを2進数で表すと0001101000111111となります。16ビット幅の範囲内で表現されます。</dd>
+                    <dt>「8'o17」</dt>
+                    <dd>8ビット幅で、基数はo(8進数)、数値は 17 です。8進数で表される17は、2進数にすると00000111、10進数では15となります。8ビットの範囲内で表現されます。</dd>
+                </dl>
+                <h4>ビット幅と基数が省略された場合:</h4>
+                <ul>
+                    <li>ビット幅を省略: 32 ビットのデフォルト幅で処理されます。</li>
+                    <li>基数を省略: 基数が指定されない場合は、10進数として扱われます。</li>
+                </ul>
+                <p>たとえば、8'hFF は 8 ビットの16進数「FF」ですが、hFF と書いた場合は、32 ビットの16進数「FF」と解釈されます。また、123はデフォルトで10進数の123として処理されます。</p>
+            </section>
+
+            <a href="index.html" class="back-link">← 目次に戻る</a>
+        </main>
+    </div>
+</body>
+</html>
